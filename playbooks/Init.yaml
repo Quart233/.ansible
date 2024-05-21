@@ -20,7 +20,7 @@
         content: "{{ genkey.stdout }}"
         dest: /etc/wireguard/{{ iface }}.pub
 
-    - name: Generate WireGuard config for {{ inventory_hostname }}
+    - name: WireGuard config for {{ inventory_hostname }}
       template:
         src: server.j2
         dest: /etc/wireguard/{{ iface }}.conf
