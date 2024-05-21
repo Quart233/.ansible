@@ -2,6 +2,11 @@
   vars:
     iface: wg0 # interface name
   tasks:
+    - name: Install WireGuard
+      package:
+        name: wireguard-tools
+        state: present
+
     - name: Generate {{ inventory_hostname }} private key
       command: wg genkey
       register: genkey
