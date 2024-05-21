@@ -1,4 +1,4 @@
 [Interface]
 PrivateKey = {{ genkey.stdout }}
-Address = 10.10.11.1
+Address = 10.10.11.{{ ansible_loop.index }}
 ListenPort = 51000

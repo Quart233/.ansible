@@ -23,6 +23,8 @@
         group: root
         mode: 0600
       loop: "{{ ansible_play_batch }}"
+      loop_control:
+        extended: true
 
     - name: Enable and start WireGuard service
       service:
