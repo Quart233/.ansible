@@ -1,0 +1,31 @@
+- hosts: ansible-playground.lan
+  vars:
+    iface: wg0 # interface name
+  tasks:
+    - name: Generate {{ inventory_hostname }} private key
+      command: wg genkey
+      register: genkey
+
+    - name: Generate {{ inventory_hostname }} private key
+      command: echo "{{ genkey.stdout }}" | wg pubkey
+      register: pubkey
+
+    - name: Save {{ inventory_hostname }} public key
+      copy:
+        content: "{{ genkey.stdout }}"
+        dest: /etc/wireguard/{{ iface }}.pub
+
+    - name: Generate WireGuard config for {{ inventory_hostname }}
+      template:
+        src: server.j2
+        dest: /etc/wireguard/{{ iface }}.conf
+        owner: root
+        group: root
+        mode: 0600
+      loop: "{{ ansible_play_batch }}"
+
+    - name: Enable and start WireGuard service
+      service:
+        name: wg-quick@{{ iface }}  # Use iface for interface name
+        state: started
+        enabled: yes

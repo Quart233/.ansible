@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "wireguard: init",
+            "label": "playbook: Init",
             "type": "shell",
-            "command": "ansible -vvv -m wireguard -a 'task=init name=wg0' ansible-playground.lan"
+            "command": "ansible-playbook playbooks/Init.yaml"
         }
     ]
 }
