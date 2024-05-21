@@ -7,11 +7,11 @@
         name: wireguard-tools
         state: present
 
-    - name: Generate {{ inventory_hostname }} private key
+    - name: Private key for {{ inventory_hostname }}
       command: wg genkey
       register: genkey
 
-    - name: Generate {{ inventory_hostname }} private key
+    - name: Public key for {{ inventory_hostname }}
       command: echo "{{ genkey.stdout }}" | wg pubkey
       register: pubkey
 
