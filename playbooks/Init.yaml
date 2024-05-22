@@ -1,6 +1,6 @@
-- hosts: ansible-playground.lan
+- hosts: Tencent
   vars:
-    iface: wg0 # interface name
+    iface: test # interface name
   tasks:
     - name: Install WireGuard
       package:
@@ -28,6 +28,7 @@
         group: root
         mode: 0600
       loop: "{{ ansible_play_batch }}"
+      when: item == ansible_hostname # Only run for the current host
       loop_control:
         extended: true
 
