@@ -1,39 +1,45 @@
-- hosts: Tencent
+- hosts: Cluster
   vars:
     iface: test # interface name
   tasks:
-    - name: Install WireGuard
+    - name: Install
       package:
         name: wireguard-tools
         state: present
 
-    - name: Private key for {{ inventory_hostname }}
-      command: wg genkey
+    - name: Private
       register: genkey
+      command: wg genkey
+    - debug:
+        msg: "genkey: {{ genkey.stdout }}"
 
-    - name: Public key for {{ inventory_hostname }}
-      command: echo "{{ genkey.stdout }}" | wg pubkey
+    - name: Public
       register: pubkey
+      command:
+        cmd: wg pubkey
+        stdin: "{{ genkey.stdout }}"
+    - debug:
+        msg: "pubkey: {{ pubkey.stdout }}"
 
-    - name: Save {{ inventory_hostname }} public key
+    - name: Save Public
       copy:
-        content: "{{ genkey.stdout }}"
+        content: "{{ pubkey.stdout }}"
         dest: /etc/wireguard/{{ iface }}.pub
 
-    - name: WireGuard config for {{ inventory_hostname }}
+    - name: Fetch pubkeys
+      delegate_to: "{{ item }}"
+      loop: "{{ ansible_play_batch }}"
+      register: pubkey_list
+      command: cat /etc/wireguard/{{ iface }}.pub
+
+    - name: WireGuard config
+      loop: "{{ ansible_play_batch }}"
+      loop_control:
+        extended: true
+      when: item == inventory_hostname
       template:
         src: server.j2
         dest: /etc/wireguard/{{ iface }}.conf
         owner: root
         group: root
         mode: 0600
-      loop: "{{ ansible_play_batch }}"
-      when: item == ansible_hostname # Only run for the current host
-      loop_control:
-        extended: true
-
-    - name: Enable and start WireGuard service
-      service:
-        name: wg-quick@{{ iface }}  # Use iface for interface name
-        state: started
-        enabled: yes

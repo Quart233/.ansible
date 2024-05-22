@@ -2,3 +2,11 @@
 PrivateKey = {{ genkey.stdout }}
 Address = 10.10.11.{{ ansible_loop.index }}
 ListenPort = 51000
+
+{% for host in pubkey_list.results %}
+{% if host.item != inventory_hostname %}
+[Peer]
+# {{ host.item }}
+PublicKey = {{ host.stdout }}
+{% endif %}
+{% endfor %}
