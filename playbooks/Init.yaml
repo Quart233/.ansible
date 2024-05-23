@@ -1,6 +1,13 @@
 - hosts: Cluster
   vars:
     iface: test # interface name
+    nodes:
+      TenGZ-2C4G: 10.10.11.1
+      TenGZ-2C2G: 10.10.11.2
+      AliGZ-2C2G: 10.10.11.3
+      AliSZ-2C2G: 10.10.11.4
+      AliHK-2C1G: 10.10.11.5
+      K3S.lan: 10.10.11.6
   tasks:
     - name: Install
       package:
@@ -33,10 +40,6 @@
       command: cat /etc/wireguard/{{ iface }}.pub
 
     - name: WireGuard config
-      loop: "{{ ansible_play_batch }}"
-      loop_control:
-        extended: true
-      when: item == inventory_hostname
       template:
         src: server.j2
         dest: /etc/wireguard/{{ iface }}.conf
