@@ -1,6 +1,8 @@
 - hosts: Cluster
+  gather_facts: false
   vars:
     iface: test # interface name
+    ListenPort: 51000
     nodes:
       TenGZ-2C4G: 10.10.11.1
       TenGZ-2C2G: 10.10.11.2
