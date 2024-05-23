@@ -1,6 +1,6 @@
 [Interface]
 PrivateKey = {{ genkey.stdout }}
-Address = {{ nodes[inventory_hostname] }}
+Address = {{ nodes[inventory_hostname].Address }}
 ListenPort = {{ ListenPort }}
 
 {% for host in pubkey_list.results %}
@@ -8,7 +8,7 @@ ListenPort = {{ ListenPort }}
 [Peer]
 # {{ host.item }}
 PublicKey = {{ host.stdout }}
-AllowIPS = {{ nodes[host.item] }}
-Endpoint = {{ hostvars[host.item].ansible_host }}:{{ ListenPort }}
+AllowIPs = {{ nodes[host.item].Address }}
+Endpoint = {{ nodes[host.item].Endpoint }}:{{ ListenPort }}
 {% endif %}
 {% endfor %}

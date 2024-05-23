@@ -4,12 +4,24 @@
     iface: test # interface name
     ListenPort: 51000
     nodes:
-      TenGZ-2C4G: 10.10.11.1
-      TenGZ-2C2G: 10.10.11.2
-      AliGZ-2C2G: 10.10.11.3
-      AliSZ-2C2G: 10.10.11.4
-      AliHK-2C1G: 10.10.11.5
-      K3S.lan: 10.10.11.6
+      TenGZ-2C4G:
+        Address: 10.10.11.1
+        Endpoint: <public-ip>
+      TenGZ-2C2G:
+        Address: 10.10.11.2
+        Endpoint: <public-ip>
+      AliGZ-2C2G:
+        Address: 10.10.11.3
+        Endpoint: <public-ip>
+      AliSZ-2C2G:
+        Address: 10.10.11.4
+        Endpoint: <public-ip>
+      AliHK-2C1G:
+        Address: 10.10.11.5
+        Endpoint: <public-ip>
+      K3S.lan:
+        Address: 10.10.11.6
+        Endpoint: <public-ip>
   tasks:
     - name: Install
       package:
