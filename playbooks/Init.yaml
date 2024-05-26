@@ -60,3 +60,11 @@
         owner: root
         group: root
         mode: 0600
+    
+    # Enable and start WireGuard service
+    - name: Enable and start WireGuard service
+      service:
+        name: wg-quick@{{ iface }}  # Interface name
+        state: started
+        enabled: yes
+      become: true
