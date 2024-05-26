@@ -8,7 +8,7 @@ ListenPort = {{ ListenPort }}
 [Peer]
 # {{ host.item }}
 PublicKey = {{ host.stdout }}
-AllowIPs = {{ nodes[host.item].Address }}
+AllowedIPs = {{ nodes[host.item].Address }}
 Endpoint = {{ nodes[host.item].Endpoint }}:{{ ListenPort }}
 {% endif %}
 {% endfor %}
